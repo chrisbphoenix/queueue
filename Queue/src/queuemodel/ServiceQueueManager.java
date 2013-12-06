@@ -189,7 +189,7 @@ public class ServiceQueueManager
      *  
      * @return ArrayList myTotalsArrayList
      */
-    public ArrayList getTotals()
+    public ArrayList<Integer> getTotals()
     {
     	myTotalsArrayList = new ArrayList<Integer>(6);
     	
