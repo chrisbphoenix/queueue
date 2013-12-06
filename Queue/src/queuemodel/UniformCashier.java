@@ -6,17 +6,19 @@ public class UniformCashier
 {
     private ServiceQueue myServiceQueue;
     private int myRandomServiceTime;
+    private int maxDelay;
     private Random myRand;
     
     public UniformCashier(int maxTime, ServiceQueue serviceQueue)
     {
         myServiceQueue = serviceQueue;
-        myRand = new Random(maxTime);
+        maxDelay = maxTime;
+        myRand = new Random();
     }
     
     public int generateServiceTime()
     {
-        myRandomServiceTime = myRand.nextInt();
+        myRandomServiceTime = myRand.nextInt(maxDelay);
         return myRandomServiceTime;
     }
     

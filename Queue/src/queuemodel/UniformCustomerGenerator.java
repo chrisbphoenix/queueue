@@ -6,16 +6,18 @@ public class UniformCustomerGenerator
 {
 	private Random myRandom;
 	private ServiceQueueManager mySQM;
+	private int maxDelay;
 
 	public UniformCustomerGenerator(int maxTimeBetweenCustomers, ServiceQueueManager serviceQueueManager)
 	{
-		myRandom = new Random(maxTimeBetweenCustomers);
+		myRandom = new Random();
+		maxDelay = maxTimeBetweenCustomers;
 		mySQM = serviceQueueManager;
 	}
 	
-	public int generateTimeBetweenCustomers()
+	public long generateTimeBetweenCustomers()
 	{
-		return myRandom.nextInt();
+		return myRandom.nextInt(maxDelay);
 	}
 	
 	public ServiceQueueManager getSQM()

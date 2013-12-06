@@ -30,9 +30,9 @@ public class CustomerGenerator extends UniformCustomerGenerator implements Runna
 	 * Returns the time the generator takes between generation of customers,
 	 * using the super class generateTimeBetweenCustomers()
 	 * 
-	 * @return Int generated time
+	 * @return Long generated time
 	 */
-	public int generateTimeBetweenCustomers()
+	public long generateTimeBetweenCustomers()
 	{
 		return super.generateTimeBetweenCustomers();
 	}
@@ -55,16 +55,17 @@ public class CustomerGenerator extends UniformCustomerGenerator implements Runna
 			myShortestServiceQueue = super.getSQM().determineShortestQueue();
 			myShortestServiceQueue.insertCustomer(this.generateCustomer());
 			myMaxNumberCustomers--;
+			try
+	        {
+	            Thread.sleep(this.generateTimeBetweenCustomers());
+	        } catch (InterruptedException e)
+	        {
+	            System.out.println("Thread derp");
+	            e.printStackTrace();
+	        }
 		}
 
-		try
-		{
-			Thread.sleep(this.generateTimeBetweenCustomers());
-		} catch (InterruptedException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 
 	public void start()

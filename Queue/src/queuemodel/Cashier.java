@@ -43,7 +43,7 @@ public class Cashier extends UniformCashier implements Runnable
 	 */
 	public int serveCustomer()
 	{
-		if (myServiceQueue.serveCustomer() == null)
+		if (myServiceQueue.getTotalCustomersInLine() == 0)
 		{
 			return 0;
 		} else
@@ -73,7 +73,7 @@ public class Cashier extends UniformCashier implements Runnable
 			myServiceQueue.addToServiceTime(this.serveCustomer());
 			try
 			{
-				Thread.sleep(myDelay);
+				Thread.sleep(this.generateServiceTime());
 			} catch (InterruptedException e)
 			{
 				// TODO Auto-generated catch block
