@@ -183,6 +183,8 @@ public class ServiceQueueManager
     	{
     		myCashiers[i].stop();
     	}
+    	
+    	myCustomerGenerator.stop();
     }
     /**
      * Method that accumulates all of the values to be displayed in the view, and returns them inside of an ArrayList.
