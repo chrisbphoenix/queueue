@@ -5,7 +5,6 @@ import java.util.Random;
 public class CustomerGenerator extends UniformCustomerGenerator implements Runnable
 {
 	private int myMaxTimeBetweenCustomers, myRandomTimeBetweenCustomers, myMaxNumberCustomers;
-	private Random myRandom;
 	private ServiceQueue myShortestServiceQueue;
 	private Thread myThread;
 
@@ -59,7 +58,7 @@ public class CustomerGenerator extends UniformCustomerGenerator implements Runna
 
 		try
 		{
-			Thread.sleep(this.getTimeBetweenCustomers());
+			Thread.sleep(this.generateTimeBetweenCustomers());
 		} catch (InterruptedException e)
 		{
 			// TODO Auto-generated catch block
@@ -95,10 +94,7 @@ public class CustomerGenerator extends UniformCustomerGenerator implements Runna
 	 * 
 	 * @return int random time between customers.
 	 */
-	public int getTimeBetweenCustomers()
-	{
-		return this.generateTimeBetweenCustomers();
-	}
+
 	
 	public void setMaxNumberCustomers(int maxNumberCustomers)
 	{

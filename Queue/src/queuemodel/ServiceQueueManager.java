@@ -1,5 +1,7 @@
 package queuemodel;
 
+import java.util.ArrayList;
+
 public class ServiceQueueManager
 {
     public static final int MAX_NUMBER_OF_QUEUES = 5;
@@ -15,6 +17,7 @@ public class ServiceQueueManager
     private long myAverageIdleTime;
     private long myPresentTime;
     private long myStartTime;
+    private ArrayList<Integer> myTotalsArrayList; 
     
     public ServiceQueueManager(int serviceLines, int maxTimeBetweenCustomers, int maxTimeService, int checkTime)
     {
@@ -171,5 +174,32 @@ public class ServiceQueueManager
     	}
     	
     	myCustomerGenerator.start();
+    }
+    
+    /**
+     * Method that accumulates all of the values to be displayed in the view, and returns them inside of an ArrayList.
+     * 
+     * ORDER:
+     * 	totalServedSoFar   [0]
+     *  totalWaitTime	   [1]
+     *  totalServiceTime   [2]
+     *  averageWaitTime    [3]
+     *  averageServiceTime [4]
+     *  averageIdleTime    [5]
+     *  
+     * @return ArrayList myTotalsArrayList
+     */
+    public ArrayList getTotals()
+    {
+    	myTotalsArrayList = new ArrayList<Integer>(6);
+    	
+    	myTotalsArrayList.add(this.totalServedSoFar());
+    	myTotalsArrayList.add(this.totalWaitTime());
+    	myTotalsArrayList.add(this.totalServiceTime());
+    	myTotalsArrayList.add(this.averageWaitTime());
+    	myTotalsArrayList.add(this.averageServiceTime());
+    	myTotalsArrayList.add(this.averageIdleTime());
+    	
+    	return myTotalsArrayList;
     }
 }
