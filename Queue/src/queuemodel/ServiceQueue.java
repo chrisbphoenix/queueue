@@ -97,4 +97,9 @@ public class ServiceQueue
     {
     	return myNumberCustomersInLine;
     }
+    
+    public int getNumberCustomersServedSoFar()
+    {
+    	return this.myNumberCustomersServedSoFar;
+    }
 }

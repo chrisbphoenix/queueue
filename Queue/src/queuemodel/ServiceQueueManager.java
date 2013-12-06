@@ -202,4 +202,33 @@ public class ServiceQueueManager
     	
     	return myTotalsArrayList;
     }
+    
+//    /**
+//     * Returns the number of customers that have been generated thus far. 
+//     * @return
+//     */
+//    public int getGeneratedCustomers()
+//    {
+//    	int numberGeneratedCustomers = 0;
+//    	for(ServiceQueue sq : myServiceQueues)
+//    	{
+//    		numberGeneratedCustomers += sq.getNumberCustomersServedSoFar();
+//    	}
+//    	return numberGeneratedCustomers;
+//    }
+    
+    public ServiceQueue[] getAllServiceQueues()
+    {
+    	return myServiceQueues;
+    }
+    
+    public int getNumberServiceLines()
+    {
+    	return myNumberOfServiceLines;
+    }
+    
+    public CustomerGenerator getCustomerGenerator()
+    {
+    	return myCustomerGenerator;
+    }
 }

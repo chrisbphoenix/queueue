@@ -100,4 +100,9 @@ public class CustomerGenerator extends UniformCustomerGenerator implements Runna
 	{
 		myMaxNumberCustomers = maxNumberCustomers;
 	}
+	
+	public int getMaxNumberCustomers()
+	{
+		return myMaxNumberCustomers;
+	}
 }
