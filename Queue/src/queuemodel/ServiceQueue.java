@@ -42,12 +42,14 @@ public class ServiceQueue
     public void insertCustomer(Customer newCustomer)
     {
         myQueue.enqueue(newCustomer);
+        myNumberCustomersInLine++;
     }
 
     public Customer serveCustomer()
     {
         if (myQueue.hasNext())
         {
+        	myNumberCustomersInLine--;
             return myQueue.dequeue();
         }
         return null;
@@ -89,5 +91,10 @@ public class ServiceQueue
     public int getTotalIdle()
     {
         return myTotalIdleTime;
+    }
+    
+    public int getTotalCustomersInLine()
+    {
+    	return myNumberCustomersInLine;
     }
 }
