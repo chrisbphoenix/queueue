@@ -13,6 +13,7 @@ public class Cashier extends UniformCashier implements Runnable
 	private ServiceQueue myServiceQueue;
 	private Thread myThread;
 	private Customer myCustomer;
+	private boolean myIsRunning;
 
 	/**
 	 * Cashier Constructor. Calls the UniformCashier super constructor, passing
@@ -29,6 +30,7 @@ public class Cashier extends UniformCashier implements Runnable
 		myMaxTimeOfService = maxTime;
 		myDelay = checkTime;
 		myServiceQueue = serviceQueue;
+		myIsRunning = true;
 		myThread = new Thread(this);
 	}
 
@@ -65,7 +67,7 @@ public class Cashier extends UniformCashier implements Runnable
 	@Override
 	public void run()
 	{
-		while (true)
+		while (myIsRunning)
 		{
 			this.serveCustomer();
 			myServiceQueue.addToServiceTime(this.serveCustomer());
@@ -82,6 +84,7 @@ public class Cashier extends UniformCashier implements Runnable
 
 	public void start()
 	{
+		myIsRunning = true;
 		try
 		{
 			myThread.start();
@@ -95,6 +98,11 @@ public class Cashier extends UniformCashier implements Runnable
 	// Accessors
 	// //////////////////////////////////
 
+	public void stop()
+	{
+		myIsRunning = false;
+	}
+	
 	public void setMaxTime(int maxTime)
 	{
 		myMaxTimeOfService = maxTime;

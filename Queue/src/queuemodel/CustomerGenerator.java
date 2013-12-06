@@ -7,21 +7,22 @@ public class CustomerGenerator extends UniformCustomerGenerator implements Runna
 	private int myMaxTimeBetweenCustomers, myRandomTimeBetweenCustomers, myMaxNumberCustomers;
 	private ServiceQueue myShortestServiceQueue;
 	private Thread myThread;
+	private boolean myIsRunning;
 
 	/**
 	 * Constructor for the CustomerGenerator. Calls the super constructor and
-	 * passes the maxTimeBetweenCustomers and serviceQueueManager. Defaults the
-	 * myMaxNumberCustomers value to 500. Sets the max time between customers to
-	 * maxTimeBetweenCustomers.
+	 * passes the maxTimeBetweenCustomers, maxNumberCustomers and serviceQueueManager. Sets the max time between customers to
+	 * maxTimeBetweenCustomers. Sets the max number of customers to maxNumberCustomers. 
 	 * 
 	 * @param maxTimeBetweenCustomers
 	 * @param serviceQueueManager
 	 */
-	public CustomerGenerator(int maxTimeBetweenCustomers, ServiceQueueManager serviceQueueManager)
+	public CustomerGenerator(int maxTimeBetweenCustomers, int maxNumberCustomers, ServiceQueueManager serviceQueueManager)
 	{
 		super(maxTimeBetweenCustomers, serviceQueueManager);
 		myMaxTimeBetweenCustomers = maxTimeBetweenCustomers;
-		myMaxNumberCustomers = 500;
+		myMaxNumberCustomers = maxNumberCustomers; 
+		myIsRunning = true;
 		myThread = new Thread(this);
 	}
 
@@ -49,7 +50,7 @@ public class CustomerGenerator extends UniformCustomerGenerator implements Runna
 
 	public void run()
 	{
-		while (myMaxNumberCustomers > 0)
+		while (myMaxNumberCustomers > 0 && myIsRunning)
 		{
 			myShortestServiceQueue = super.getSQM().determineShortestQueue();
 			myShortestServiceQueue.insertCustomer(this.generateCustomer());
@@ -68,6 +69,7 @@ public class CustomerGenerator extends UniformCustomerGenerator implements Runna
 
 	public void start()
 	{
+		myIsRunning = true;
 		try
 		{
 			myThread.start();
@@ -75,6 +77,11 @@ public class CustomerGenerator extends UniformCustomerGenerator implements Runna
 		{
 			System.out.println("Thread already started");
 		}
+	}
+	
+	public void stop()
+	{
+		myIsRunning = false;
 	}
 
 	/**

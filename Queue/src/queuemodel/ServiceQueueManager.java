@@ -19,12 +19,12 @@ public class ServiceQueueManager
     private long myStartTime;
     private ArrayList<Integer> myTotalsArrayList; 
     
-    public ServiceQueueManager(int serviceLines, int maxTimeBetweenCustomers, int maxTimeService, int checkTime)
+    public ServiceQueueManager(int serviceLines, int maxNumberCustomers, int maxTimeBetweenCustomers, int maxTimeService, int checkTime)
     {
         myNumberOfServiceLines = serviceLines;
         myServiceQueues = new ServiceQueue[myNumberOfServiceLines];
         myCashiers = new Cashier[myNumberOfServiceLines];
-        myCustomerGenerator = new CustomerGenerator(maxTimeBetweenCustomers, this);
+        myCustomerGenerator = new CustomerGenerator(maxTimeBetweenCustomers, maxNumberCustomers, this);
         
         for(int i = 0; i < myNumberOfServiceLines; i++)
         {
@@ -36,14 +36,15 @@ public class ServiceQueueManager
     /**
      * Default ServiceQueueManager constructor. Creates three service lines, and initializes the 
      * maximum time between customer generation, customer service and the time between the cashier
-     * checking for a new customer to 100 milliseconds. 
+     * checking for a new customer to 100 milliseconds. Creates a default CustomerGenerator with 500 
+     * customers to create. 
      */
     public ServiceQueueManager()
     {
     	myNumberOfServiceLines = 3;
     	myServiceQueues = new ServiceQueue[myNumberOfServiceLines];
     	myCashiers = new Cashier[myNumberOfServiceLines];
-    	myCustomerGenerator = new CustomerGenerator(100, this);
+    	myCustomerGenerator = new CustomerGenerator(100, 500, this);
     	
     	for(int i = 0; i < myNumberOfServiceLines; i++)
     	{
@@ -176,6 +177,13 @@ public class ServiceQueueManager
     	myCustomerGenerator.start();
     }
     
+    public void stopProgram()
+    {
+    	for(int i = 0; i < myNumberOfServiceLines; i++)
+    	{
+    		myCashiers[i].stop();
+    	}
+    }
     /**
      * Method that accumulates all of the values to be displayed in the view, and returns them inside of an ArrayList.
      * 
