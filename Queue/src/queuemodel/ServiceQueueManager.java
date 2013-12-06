@@ -3,8 +3,9 @@ package queuemodel;
 public class ServiceQueueManager
 {
     public static final int MAX_NUMBER_OF_QUEUES = 5;
-    private int myNumberOfServiceQueues;
+    private int myNumberOfServiceLines;
     private ServiceQueue[] myServiceQueues;
+    private Cashier[] myCashiers;
     private long myTotalWaitTime;
     private long myTotalServiceTime;
     private long myTotalIdleTime;
@@ -14,8 +15,11 @@ public class ServiceQueueManager
     private long myPresentTime;
     private long myStartTime;
     
-    public ServiceQueueManager()
+    public ServiceQueueManager(int serviceLines)
     {
+        myNumberOfServiceLines = serviceLines;
+        myServiceQueues = new ServiceQueue[myNumberOfServiceLines];
+        myCashiers = new Cashier[myNumberOfServiceLines];
         
     }
     
