@@ -50,7 +50,7 @@ public class CustomerGenerator extends UniformCustomerGenerator implements Runna
 
 	public void run()
 	{
-		while (myGeneratedCustomers <= myMaxNumberCustomers && myIsRunning)
+		while (myGeneratedCustomers < myMaxNumberCustomers && myIsRunning)
 		{
 			myShortestServiceQueue = super.getSQM().determineShortestQueue();
 			myShortestServiceQueue.insertCustomer(this.generateCustomer());
