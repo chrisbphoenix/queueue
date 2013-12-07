@@ -50,6 +50,7 @@ public class ServiceQueue
         if (myQueue.hasNext())
         {
         	myNumberCustomersInLine--;
+        	myNumberCustomersServedSoFar++;
             return myQueue.dequeue();
         }
         return null;

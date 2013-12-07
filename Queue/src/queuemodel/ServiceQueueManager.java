@@ -9,16 +9,22 @@ public class ServiceQueueManager
     private ServiceQueue[] myServiceQueues;
     private Cashier[] myCashiers;
     private CustomerGenerator myCustomerGenerator;
-    private long myTotalWaitTime;
-    private long myTotalServiceTime;
-    private long myTotalIdleTime;
+    private long myTotalWaitTime, myTotalServiceTime, myTotalIdleTime, myAverageIdleTime, myPresentTime,
+    	myStartTime;
     private double myAverageWaitTime;
     private double myAverageServiceTime;
-    private long myAverageIdleTime;
-    private long myPresentTime;
-    private long myStartTime;
     private ArrayList<Integer> myTotalsArrayList; 
     
+    /**
+     * ServiceQueueManager constructor. Creates the specified number of service lanes, and initializes
+     * the maximum time between customer generation, customer service and the time between the cashier checking for a new customer
+     * as defined in the parameters. 
+     * @param serviceLines
+     * @param maxNumberCustomers
+     * @param maxTimeBetweenCustomers
+     * @param maxTimeService
+     * @param checkTime
+     */
     public ServiceQueueManager(int serviceLines, int maxNumberCustomers, int maxTimeBetweenCustomers, int maxTimeService, int checkTime)
     {
         myNumberOfServiceLines = serviceLines;

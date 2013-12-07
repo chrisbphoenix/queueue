@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class CustomerGenerator extends UniformCustomerGenerator implements Runnable
 {
-	private int myMaxTimeBetweenCustomers, myRandomTimeBetweenCustomers, myMaxNumberCustomers;
+	private int myMaxTimeBetweenCustomers, myRandomTimeBetweenCustomers, myMaxNumberCustomers, myGeneratedCustomers;
 	private ServiceQueue myShortestServiceQueue;
 	private Thread myThread;
 	private boolean myIsRunning;
@@ -50,11 +50,11 @@ public class CustomerGenerator extends UniformCustomerGenerator implements Runna
 
 	public void run()
 	{
-		while (myMaxNumberCustomers > 0 && myIsRunning)
+		while (myGeneratedCustomers <= myMaxNumberCustomers && myIsRunning)
 		{
 			myShortestServiceQueue = super.getSQM().determineShortestQueue();
 			myShortestServiceQueue.insertCustomer(this.generateCustomer());
-			myMaxNumberCustomers--;
+			myGeneratedCustomers++;
 			try
 	        {
 	            Thread.sleep(this.generateTimeBetweenCustomers());
@@ -112,5 +112,10 @@ public class CustomerGenerator extends UniformCustomerGenerator implements Runna
 	public int getMaxNumberCustomers()
 	{
 		return myMaxNumberCustomers;
+	}
+	
+	public int getGeneratedCustomers()
+	{
+		return myGeneratedCustomers;
 	}
 }
