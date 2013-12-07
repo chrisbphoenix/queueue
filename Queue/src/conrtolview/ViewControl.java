@@ -1,6 +1,7 @@
 package conrtolview;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -24,12 +25,11 @@ public class ViewControl extends JFrame implements ActionListener, Runnable
     //Components
     
     private JButton theButton;
-    private JLabel averageHeaderLabel, avWtTmLabel, avSvTmLabel, avIdTmLabel, individualHeaderLabel, csh1Label, csh2Label, csh3Label, csh4Label, csh5Label;
+    private JLabel avWtTmLabel, avSvTmLabel, avIdTmLabel, csh1Label, csh2Label, csh3Label, csh4Label, csh5Label;
     private JLabel numQueueLabel, serviceDelayLabel, cashierDelayLabel, numCustLabel, custDelayLabel, blankLabel;
     private JComboBox<Integer> numQueue, serviceDelay, cashierDelay, numCust, custDelay;
     private JProgressBar totalBar;
-    private String totalLabel, qu1Label, qu2Label, qu3Label, qu4Label, qu5Label;
-    private JPanel center, east, south, centerCenter, centerSouth;
+    private JPanel center, north, south, centerCenter, centerSouth;
     private Integer[] numQueuesList = {1,2,3,4,5,10}, delayList = {10,100,500,1000}, custList = {10,100,500,1000,10000,1000000};
     private HashMap<ServiceQueue, JProgressBar> progressMap;
     private boolean isRunning;
@@ -56,21 +56,15 @@ public class ViewControl extends JFrame implements ActionListener, Runnable
         //Center Panels - Progress Bars
         center = new JPanel(new BorderLayout());
         centerCenter = new JPanel(new GridLayout(1,5));
-        
         centerSouth = new JPanel();
-        totalBar = new JProgressBar(SwingConstants.HORIZONTAL);
-        centerSouth.add(totalBar);
-        totalBar.setStringPainted(true);
         
         center.add(centerCenter, BorderLayout.CENTER);
         center.add(centerSouth, BorderLayout.SOUTH);
         contentBorder.add(center);
         
-        //East Panel - Statistics
-        east = new JPanel(new GridLayout(0,2));
-        
-        
-        contentBorder.add(east, BorderLayout.EAST);
+        //North Panel - Statistics
+        north = new JPanel(new GridLayout(1,8, 4, 4));
+        contentBorder.add(north, BorderLayout.NORTH);
         
         //South Panel - User Controls
         south = new JPanel(new GridLayout(2,6));
@@ -102,7 +96,7 @@ public class ViewControl extends JFrame implements ActionListener, Runnable
         custDelay.setEditable(true);
         south.add(custDelay);
         
-        theButton = new JButton("Engage!");
+        theButton = new JButton("Goooo!");
         theButton.addActionListener(this);
         south.add(theButton);
         
@@ -114,6 +108,7 @@ public class ViewControl extends JFrame implements ActionListener, Runnable
      */
     private void stop()
     {
+        theButton.setText("Again!");
         isRunning = false;
         sqm.stopProgram();
         myThread = new Thread(this);
@@ -126,11 +121,19 @@ public class ViewControl extends JFrame implements ActionListener, Runnable
         for(ServiceQueue sq : sqm.getAllServiceQueues())
         {
             progressMap.get(sq).setValue(sq.getTotalCustomersInLine());
-            progressMap.get(sq).setString(sq.getTotalCustomersInLine() + " In Line; " + sq.getNumberCustomersServedSoFar() + "Served"); 
+            progressMap.get(sq).setString(sq.getTotalCustomersInLine() + " In Line; " + sq.getNumberCustomersServedSoFar() + " Served"); 
         }
         
         totalBar.setValue(sqm.totalServedSoFar());
-        totalBar.setString("Progress: " + totalBar.getValue() + "/" + sqm.getCustomerGenerator().getMaxNumberCustomers());
+        totalBar.setString("Progress: " + sqm.totalServedSoFar() + "/" + sqm.getCustomerGenerator().getMaxNumberCustomers());
+        
+        north.removeAll();
+        avWtTmLabel = new JLabel("Average Wait: " + sqm.averageWaitTime(), JLabel.LEFT);
+        avSvTmLabel = new JLabel("Average Service: " + sqm.averageServiceTime(), JLabel.CENTER);
+        avIdTmLabel = new JLabel("Average Idle: " + sqm.averageWaitTime(), JLabel.RIGHT);
+        north.add(avWtTmLabel);
+        north.add(avSvTmLabel);
+        north.add(avIdTmLabel);
         
         this.setVisible(true);
     }
@@ -140,12 +143,19 @@ public class ViewControl extends JFrame implements ActionListener, Runnable
     private void rebuildGui()
     {
         centerCenter.removeAll();
+        centerSouth.removeAll();
         for(ServiceQueue sq : sqm.getAllServiceQueues())
         {
             progressMap.put(sq, new JProgressBar(SwingConstants.VERTICAL, 0, sqm.getCustomerGenerator().getMaxNumberCustomers() / sqm.getNumberServiceLines()));
             progressMap.get(sq).setStringPainted(true);
             centerCenter.add(progressMap.get(sq));
         }
+        totalBar = new JProgressBar(0, sqm.getCustomerGenerator().getMaxNumberCustomers());
+        totalBar.setStringPainted(true);
+        centerSouth.add(totalBar);
+        
+        
+        
         this.setVisible(true);
     }
     
@@ -163,6 +173,7 @@ public class ViewControl extends JFrame implements ActionListener, Runnable
      */
     private void start()
     {
+        theButton.setText("Stop!!");
         sqm = new ServiceQueueManager((int)numQueue.getSelectedItem(), (int)numCust.getSelectedItem(), (int)custDelay.getSelectedItem(), (int)serviceDelay.getSelectedItem(), (int)cashierDelay.getSelectedItem());
         this.rebuildGui();
         sqm.startProgram();
@@ -188,12 +199,10 @@ public class ViewControl extends JFrame implements ActionListener, Runnable
             if(isRunning)
             {
                 this.stop();
-                theButton.setText("Start");
             }
             else
             {
                 this.start();
-                theButton.setText("Stop!");
             }
         }
     }
